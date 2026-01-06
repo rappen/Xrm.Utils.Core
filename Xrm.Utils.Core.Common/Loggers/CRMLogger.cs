@@ -74,6 +74,11 @@
         public virtual void EndSection()
         {
             var i = stack.Count - 1;
+            if (i < 0)
+            {
+                Log("↑ (no section to end)");
+                return;
+            }
             try
             {
                 var section = stack[i];
