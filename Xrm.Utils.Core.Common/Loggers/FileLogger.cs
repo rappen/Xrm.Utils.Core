@@ -102,6 +102,11 @@
         public virtual void EndSection()
         {
             int i = stack.Count - 1;
+            if (i < 0)
+            {
+                Log("↑ (no section to end)");
+                return;
+            }
             try
             {
                 var section = stack[i];
@@ -110,8 +115,7 @@
             }
             catch (ArgumentOutOfRangeException)
             {
-                Log("  *** Logger: Invalid section stack index: {0}", i);
-                Log("↑ -unknown section-");
+                Log("↑ (section stack out of range)");
             }
         }
 
@@ -314,7 +318,7 @@
                     }
                 }
             }
-            catch (Exception ex) { }
+            catch { }
             return mb;
         }
 

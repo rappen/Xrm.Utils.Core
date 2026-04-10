@@ -227,6 +227,18 @@
                         }
                         break;
 
+                    case "OptionSetValueCollection":
+                    case "MultiSelectPicklist":
+                        if (!string.IsNullOrWhiteSpace(value))
+                        {
+                            var collection = new OptionSetValueCollection(
+                                value.Split(',')
+                                     .Select(v => new OptionSetValue(int.Parse(v.Trim())))
+                                     .ToList());
+                            entity.SetAttribute(attribute, collection);
+                        }
+                        break;
+
                     case "EntityReference":
                     case "Lookup":
                     case "Customer":

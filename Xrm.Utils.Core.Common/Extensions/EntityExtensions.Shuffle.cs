@@ -102,7 +102,7 @@
                 xEntityId.Value = entity.Id.ToString();
                 xEntity.Attributes.Append(xEntityId);
             }
-            foreach (var attribute in entity.Attributes)
+            foreach (var attribute in entity.Attributes.OrderBy(a => a.Key))
             {
                 if (attribute.Key == container.Entity(entity.LogicalName).PrimaryIdAttribute)
                 {
@@ -156,7 +156,7 @@
             var xEntityId = result.CreateAttribute("id");
             xEntityId.Value = entity.Id.ToString();
             xEntity.Attributes.Append(xEntityId);
-            foreach (var attribute in entity.Attributes)
+            foreach (var attribute in entity.Attributes.OrderBy(a => a.Key))
             {
                 if (attribute.Key == container.Entity(entity.LogicalName).PrimaryIdAttribute)
                 {
