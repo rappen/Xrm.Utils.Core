@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.5.33516.290
+# Visual Studio Version 18
+VisualStudioVersion = 18.4.11626.88 stable
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Innofactor.Xrm.Utils.Common", "Innofactor.Xrm.Utils.Common\Innofactor.Xrm.Utils.Common.shproj", "{6B4F59AE-7903-47B0-B888-B7B2EAD40B2C}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Xrm.Utils.Core.Common", "Xrm.Utils.Core.Common\Xrm.Utils.Core.Common.shproj", "{A939CF3B-672A-4F68-8E6A-89EFE8C8CFBB}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Innofactor.Xrm.Utils.Workflow", "Innofactor.Xrm.Utils.Workflow\Innofactor.Xrm.Utils.Workflow.shproj", "{757D7E0D-BCBB-4773-A06C-DD27904B939B}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Xrm.Utils.Core.Plugin", "Xrm.Utils.Core.Plugin\Xrm.Utils.Core.Plugin.shproj", "{6D7C6DE9-BDDB-47BD-B117-F26C4BE762D4}"
 EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Innofactor.Xrm.Utils.Plugin", "Innofactor.Xrm.Utils.Plugin\Innofactor.Xrm.Utils.Plugin.shproj", "{5878BE73-CF3F-4946-AB03-C3B1039E3A62}"
+Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Xrm.Utils.Core.Workflow", "Xrm.Utils.Core.Workflow\Xrm.Utils.Core.Workflow.shproj", "{68D06CCA-D478-4BD9-8FE9-ECF463D8E54E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,8 +21,8 @@ Global
 		SolutionGuid = {4140B535-38DA-49CD-A964-7847AE19E738}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		Innofactor.Xrm.Utils.Plugin\Innofactor.Xrm.Utils.Plugin.projitems*{5878be73-cf3f-4946-ab03-c3b1039e3a62}*SharedItemsImports = 13
-		Innofactor.Xrm.Utils.Common\Innofactor.Xrm.Utils.Common.projitems*{6b4f59ae-7903-47b0-b888-b7b2ead40b2c}*SharedItemsImports = 13
-		Innofactor.Xrm.Utils.Workflow\Innofactor.Xrm.Utils.Workflow.projitems*{757d7e0d-bcbb-4773-a06c-dd27904b939b}*SharedItemsImports = 13
+		Xrm.Utils.Core.Workflow\Xrm.Utils.Core.Workflow.projitems*{68d06cca-d478-4bd9-8fe9-ecf463d8e54e}*SharedItemsImports = 13
+		Xrm.Utils.Core.Plugin\Xrm.Utils.Core.Plugin.projitems*{6d7c6de9-bddb-47bd-b117-f26c4be762d4}*SharedItemsImports = 13
+		Xrm.Utils.Core.Common\Xrm.Utils.Core.Common.projitems*{a939cf3b-672a-4f68-8e6a-89efe8c8cfbb}*SharedItemsImports = 13
 	EndGlobalSection
 EndGlobal
