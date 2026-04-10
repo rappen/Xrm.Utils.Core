@@ -2,11 +2,12 @@
 {
     using System;
     using System.IO;
+    using System.Linq;
     using System.Runtime.Serialization;
     using System.Xml;
+    using Microsoft.Xrm.Sdk;
     using Xrm.Utils.Core.Common.Interfaces;
     using Xrm.Utils.Core.Common.Misc;
-    using Microsoft.Xrm.Sdk;
 
     /// <summary>
     /// This class contains methods related to Shuffle
@@ -102,9 +103,10 @@
                 xEntityId.Value = entity.Id.ToString();
                 xEntity.Attributes.Append(xEntityId);
             }
+            var primaryIdAttribute = container.Entity(entity.LogicalName).PrimaryIdAttribute;
             foreach (var attribute in entity.Attributes.OrderBy(a => a.Key))
             {
-                if (attribute.Key == container.Entity(entity.LogicalName).PrimaryIdAttribute)
+                if (attribute.Key == primaryIdAttribute)
                 {
                     continue;
                 }
@@ -156,9 +158,10 @@
             var xEntityId = result.CreateAttribute("id");
             xEntityId.Value = entity.Id.ToString();
             xEntity.Attributes.Append(xEntityId);
+            var primaryIdAttribute = container.Entity(entity.LogicalName).PrimaryIdAttribute;
             foreach (var attribute in entity.Attributes.OrderBy(a => a.Key))
             {
-                if (attribute.Key == container.Entity(entity.LogicalName).PrimaryIdAttribute)
+                if (attribute.Key == primaryIdAttribute)
                 {
                     continue;
                 }
