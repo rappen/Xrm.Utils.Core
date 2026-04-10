@@ -191,9 +191,9 @@
         /// <returns></returns>
         public static string ToTextFile(this EntityCollection entityCollection, IExecutionContainer container, char delimeter)
         {
-            for (var i = 0; i < entityCollection.Count(); i++)
+            for (var i = 0; i < entityCollection.Entities.Count; i++)
             {
-                var pkattribute = container.Entity(entityCollection[i].LogicalName).PrimaryIdAttribute;
+                var pkattribute = container.Entity(entityCollection.Entities[i].LogicalName).PrimaryIdAttribute;
                 if (!string.IsNullOrWhiteSpace(pkattribute))
                 {
                     return entityCollection.ToTextFile(container, pkattribute, delimeter);
