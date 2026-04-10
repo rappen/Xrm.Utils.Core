@@ -747,6 +747,10 @@
             {
                 return ((EntityReference)attribute).Id;
             }
+            else if (attribute is OptionSetValueCollection)
+            {
+                return string.Join(",", ((OptionSetValueCollection)attribute).Select(o => o.Value));
+            }
             else if (attribute is OptionSetValue)
             {
                 return ((OptionSetValue)attribute).Value;
