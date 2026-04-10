@@ -233,7 +233,9 @@
                         {
                             var collection = new OptionSetValueCollection(
                                 value.Split(',')
-                                     .Select(v => new OptionSetValue(int.Parse(v.Trim())))
+                                     .Select(v => v.Trim())
+                                     .Where(v => int.TryParse(v, out _))
+                                     .Select(v => new OptionSetValue(int.Parse(v)))
                                      .ToList());
                             entity.SetAttribute(attribute, collection);
                         }
