@@ -2,12 +2,12 @@
 {
     using System;
     using System.IO;
+    using System.Linq;
     using System.Runtime.Serialization;
     using System.Xml;
+    using Microsoft.Xrm.Sdk;
     using Xrm.Utils.Core.Common.Interfaces;
     using Xrm.Utils.Core.Common.Misc;
-    using Microsoft.Xrm.Sdk;
-    using System.Linq;
 
     /// <summary>
     /// This class contains methods related to Shuffle
