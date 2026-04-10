@@ -233,7 +233,7 @@
                 {
                     throw new InvalidPluginExecutionException($"Cannot compose text file when collection contains entities of different types. { entityname } <> {entity.LogicalName}");
                 }
-                foreach (var attribute in entity.Attributes)
+                foreach (var attribute in entity.Attributes.OrderBy(a => a.Key))
                 {
                     if (attribute.Key == primarykeyattribute)
                     {
@@ -429,7 +429,7 @@
             var xEntityId = result.CreateAttribute("id");
             xEntityId.Value = entity.Id.ToString();
             xEntity.Attributes.Append(xEntityId);
-            foreach (var attribute in entity.Attributes)
+            foreach (var attribute in entity.Attributes.OrderBy(a => a.Key))
             {
                 if (attribute.Key == primarykeyattribute)
                 {
@@ -449,9 +449,9 @@
             var xEntityId = result.CreateAttribute("id");
             xEntityId.Value = entity.Id.ToString();
             xEntity.Attributes.Append(xEntityId);
-            foreach (var attribute in entity.Attributes)
+            foreach (var attribute in entity.Attributes.OrderBy(a => a.Key))
             {
-                
+
                 if (attribute.Key == container.Entity(entity.LogicalName).PrimaryIdAttribute)
                 {
                     continue;
@@ -503,7 +503,7 @@
                 xEntityId.Value = entity.Id.ToString();
                 xEntity.Attributes.Append(xEntityId);
             }
-            foreach (var attribute in entity.Attributes)
+            foreach (var attribute in entity.Attributes.OrderBy(a => a.Key))
             {
                 if (attribute.Key == primarykeyattribute)
                 {
