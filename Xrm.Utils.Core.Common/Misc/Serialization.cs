@@ -191,7 +191,7 @@
         /// <returns></returns>
         public static string ToTextFile(this EntityCollection entityCollection, IExecutionContainer container, char delimeter)
         {
-            for(var i=0;i<= entityCollection.Count();i++)
+            for (var i = 0; i < entityCollection.Count(); i++)
             {
                 var pkattribute = container.Entity(entityCollection[i].LogicalName).PrimaryIdAttribute;
                 if (!string.IsNullOrWhiteSpace(pkattribute))
@@ -231,7 +231,7 @@
                 }
                 else if (entityname != entity.LogicalName)
                 {
-                    throw new InvalidPluginExecutionException($"Cannot compose text file when collection contains entities of different types. { entityname } <> {entity.LogicalName}");
+                    throw new InvalidPluginExecutionException($"Cannot compose text file when collection contains entities of different types. {entityname} <> {entity.LogicalName}");
                 }
                 foreach (var attribute in entity.Attributes.OrderBy(a => a.Key))
                 {
@@ -449,10 +449,10 @@
             var xEntityId = result.CreateAttribute("id");
             xEntityId.Value = entity.Id.ToString();
             xEntity.Attributes.Append(xEntityId);
+            var primaryIdAttribute = container.Entity(entity.LogicalName).PrimaryIdAttribute;
             foreach (var attribute in entity.Attributes.OrderBy(a => a.Key))
             {
-
-                if (attribute.Key == container.Entity(entity.LogicalName).PrimaryIdAttribute)
+                if (attribute.Key == primaryIdAttribute)
                 {
                     continue;
                 }
