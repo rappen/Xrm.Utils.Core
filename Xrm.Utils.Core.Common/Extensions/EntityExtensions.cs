@@ -90,6 +90,112 @@
         public static T GetAttribute<T>(this Entity entity, string attribute, T @default) =>
             (T)(object)(entity.Contains(attribute) && entity[attribute] is T ? (T)entity[attribute] : @default);
 
+        /// <summary>Gets the value of an attribute as a formatted string</summary>
+        /// <param name="entity"></param>
+        /// <param name="name"></param>
+        /// <param name="def">Returned if the attribute is null, or missing and <paramref name="supresserrors"/> is set</param>
+        /// <param name="supresserrors">Return <paramref name="def"/> instead of throwing when the attribute is missing</param>
+        /// <param name="format">
+        /// Standard or custom .NET format string, e.g. "yyyy-MM-dd" or "N2", or a composite one like "Status: {0}".
+        /// Prefix with "&lt;value&gt;" to use the raw value instead of the formatted label.
+        /// </param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Uses the label from FormattedValues when the record has one, e.g. for OptionSetValue.
+        /// Dates and numbers are formatted from their value; a text that parses as a number or date is formatted too.
+        /// Never queries the server; an EntityReference without a name gives "logicalname:id".
+        /// </remarks>
+        public static string AttributeAsString(this Entity entity, string name, string def = null, bool supresserrors = false, string format = null)
+        {
+            if (!entity.Contains(name))
+            {
+                if (!supresserrors)
+                {
+                    throw new InvalidPluginExecutionException($"Attribute {name} not found in entity {entity.LogicalName} {entity.ToStringExt()}");
+                }
+                return def;
+            }
+
+            var value = entity[name] is AliasedValue aliased ? aliased.Value : entity[name];
+            if (value == null)
+            {
+                return def;
+            }
+
+            var rawvalue = false;
+            if (format?.StartsWith("<value>") == true)
+            {
+                format = format.Substring("<value>".Length);
+                rawvalue = true;
+            }
+
+            var text = !rawvalue && entity.FormattedValues.Contains(name) && !string.IsNullOrEmpty(entity.FormattedValues[name])
+                ? entity.FormattedValues[name]
+                : AttributeValueAsString(value);
+
+            if (string.IsNullOrWhiteSpace(format))
+            {
+                return text;
+            }
+
+            // Dates and numbers are formatted from the value itself, not from the label
+            object formattable = value is Money money ? money.Value : value;
+            if (rawvalue && value is OptionSetValue optionset)
+            {
+                formattable = optionset.Value;
+            }
+            if (formattable is IFormattable && !(formattable is Enum))
+            {
+                return FormatValue(format, formattable);
+            }
+
+            // Anything else is formatted from its text, which may hold a number or a date
+            if (int.TryParse(text, NumberStyles.Integer, CultureInfo.InvariantCulture, out var intvalue))
+            {
+                return FormatValue(format, intvalue);
+            }
+            if (decimal.TryParse(text, NumberStyles.Number, CultureInfo.CurrentCulture, out var decimalvalue)
+                || decimal.TryParse(text, NumberStyles.Number, CultureInfo.InvariantCulture, out decimalvalue))
+            {
+                return FormatValue(format, decimalvalue);
+            }
+            if (DateTime.TryParse(text, CultureInfo.CurrentCulture, DateTimeStyles.None, out var datevalue))
+            {
+                return FormatValue(format, datevalue);
+            }
+            return FormatValue(format, text);
+        }
+
+        private static string AttributeValueAsString(object value)
+        {
+            switch (value)
+            {
+                case OptionSetValue optionset:
+                    return optionset.Value.ToString();
+
+                case OptionSetValueCollection optionsets:
+                    return string.Join(",", optionsets.Select(o => o.Value));
+
+                case EntityReference reference:
+                    return !string.IsNullOrEmpty(reference.Name) ? reference.Name : $"{reference.LogicalName}:{reference.Id}";
+
+                case Money money:
+                    return money.Value.ToString(CultureInfo.CurrentCulture);
+
+                default:
+                    return value.ToString();
+            }
+        }
+
+        private static string FormatValue(string format, object value)
+        {
+            if (format.Contains("{0"))
+            {
+                return string.Format(CultureInfo.CurrentCulture, format, value);
+            }
+            return value is IFormattable formattable ? formattable.ToString(format, CultureInfo.CurrentCulture) : value.ToString();
+        }
+
         /// <summary>Gets bool indicating if record is active (writable) or inactive.</summary>
         /// <param name="entity"></param>
         /// <param name="default">Default value if statecode is missing in entity.</param>
