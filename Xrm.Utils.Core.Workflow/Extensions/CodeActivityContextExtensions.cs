@@ -1,4 +1,4 @@
-﻿namespace Innofactor.Xrm.Utils.Workflow.Extensions
+﻿namespace Xrm.Utils.Core.Workflow.Extensions
 {
     using System;
     using System.Activities;

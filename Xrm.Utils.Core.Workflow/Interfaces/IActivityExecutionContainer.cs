@@ -1,7 +1,7 @@
-﻿namespace Innofactor.Xrm.Utils.Workflow.Interfaces
+﻿namespace Xrm.Utils.Core.Workflow.Interfaces
 {
     using System.Activities;
-    using Innofactor.Xrm.Utils.Common.Interfaces;
+    using Xrm.Utils.Core.Common.Interfaces;
     using Microsoft.Xrm.Sdk.Workflow;
 
     /// <summary>

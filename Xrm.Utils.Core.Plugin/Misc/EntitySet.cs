@@ -1,9 +1,9 @@
-﻿namespace Innofactor.Xrm.Utils.Common.Misc
+﻿namespace Xrm.Utils.Core.Common.Misc
 {
     using System;
     using System.Linq;
-    using Innofactor.Xrm.Utils.Common.Constants;
-    using Innofactor.Xrm.Utils.Common.Extensions;
+    using Xrm.Utils.Core.Common.Constants;
+    using Xrm.Utils.Core.Common.Extensions;
     using Microsoft.Xrm.Sdk;
 
     public class EntitySet

@@ -1,8 +1,8 @@
-﻿namespace Innofactor.Xrm.Utils.Common.Extensions
+﻿namespace Xrm.Utils.Core.Common.Extensions
 {
     using System;
     using System.Linq;
-    using Innofactor.Xrm.Utils.Common.Constants;
+    using Xrm.Utils.Core.Common.Constants;
     using Microsoft.Xrm.Sdk;
 
     public static class ContextExtensions

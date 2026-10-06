@@ -15,16 +15,14 @@ A project that imports one compiles its source files into its own assembly, so t
 `Xrm.Utils.Core.dll` to deploy - and no version conflict when several tools in the same host
 (XrmToolBox, a plugin sandbox) each carry their own copy.
 
-| Project | Contents | Status |
+| Project | Contents | Needs |
 |---|---|---|
-| **Xrm.Utils.Core.Common** | Everything below: container, extensions, fluent API, loggers, utilities. Usable in console apps, [XrmToolBox](https://www.xrmtoolbox.com/) tools, pipelines, plugins and workflows. | In use |
-| **Xrm.Utils.Core.Plugin** | `PluginBase` and `PluginContainer` for plugin development. | **Does not compile** - see below |
-| **Xrm.Utils.Core.Workflow** | `ActivityBase` and `ActivityContainer` for custom workflow activities. | **Does not compile** - see below |
+| **Xrm.Utils.Core.Common** | Everything below: container, extensions, fluent API, loggers, utilities. Usable in console apps, [XrmToolBox](https://www.xrmtoolbox.com/) tools, pipelines, plugins and workflows. | - |
+| **Xrm.Utils.Core.Plugin** | `PluginBase` and `PluginContainer` for plugin development, plus message and parameter name constants. | Common |
+| **Xrm.Utils.Core.Workflow** | `ActivityBase` and `ActivityContainer` for custom workflow activities. | Common |
 
-> **Plugin and Workflow have not been migrated yet.** They still declare and reference the old
-> `Innofactor.Xrm.Utils.*` namespaces, while Common now lives in `Xrm.Utils.Core.Common.*`, so
-> importing either one fails with errors such as *"The type or namespace name
-> 'IExecutionContainer' could not be found"*. Until they are updated, use Common only.
+The Plugin types live in Common's namespaces (`Xrm.Utils.Core.Common`, `.Interfaces`, `.Misc`,
+`.Constants`, `.Extensions`); the Workflow types are in `Xrm.Utils.Core.Workflow`.
 
 ## Using it in a project
 
@@ -40,7 +38,10 @@ A project that imports one compiles its source files into its own assembly, so t
    - the framework assemblies `System.Runtime.Caching`, `System.Runtime.Serialization`,
      `System.ServiceModel`, `System.Data` and `System.Xml`
 
-It builds for .NET Framework 4.6.2 and later; Xrm.Shuffle compiles it for both 4.6.2 (its
+For Plugin or Workflow, import Common as well, and for Workflow also reference
+`Microsoft.CrmSdk.Workflow` (NuGet) and `System.Activities`.
+
+It builds for .NET Framework 4.6.2 and later; Xrm.Shuffle compiles Common for both 4.6.2 (its
 pipeline tasks) and 4.8 (XrmToolBox).
 
 Because the source is compiled into your project, a change here reaches you when you move the
@@ -69,6 +70,36 @@ var accounts = container.RetrieveAll(new QueryExpression("account") { ColumnSet 
 container.Log($"Read {accounts.Entities.Count} accounts");
 var status = account.AttributeAsString("statuscode", "<none>", true);
 ```
+
+### In a plugin or workflow activity
+
+`PluginBase` builds a `PluginContainer` from the service provider - with the plugin execution
+context, an organization service for the context's user, a `CRMLogger` on the tracing service,
+and the target and images as `Entities` - then calls `Validate` and, if that returns true,
+`Execute`. An exception is logged and rethrown.
+
+```csharp
+using Microsoft.Xrm.Sdk;
+using Xrm.Utils.Core.Common;
+using Xrm.Utils.Core.Common.Constants;
+using Xrm.Utils.Core.Common.Extensions;
+using Xrm.Utils.Core.Common.Interfaces;
+
+public class AccountPlugin : PluginBase
+{
+    public override bool Validate(IPluginExecutionContext context) =>
+        context.PrimaryEntityName == "account" && context.MessageName == MessageName.Update;
+
+    public override void Execute(IPluginExecutionContainer container)
+    {
+        container.Log($"Depth {container.Context.Depth}");
+    }
+}
+```
+
+`ActivityBase` wraps a custom workflow activity the same way, without the `Validate` step: it
+builds an `ActivityContainer`, which also reads and writes the activity's in and out arguments,
+and calls `Execute(ActivityContainer)`.
 
 ## What is in Common
 
@@ -146,10 +177,11 @@ reader/writer.
 
 ## Testing
 
-There is no test project in this repository. Changes are tested through
+There is no test project in this repository. Common is tested through
 [Xrm.Shuffle](https://github.com/rappen/Xrm.Shuffle)'s `tests/Xrm.Shuffle.Core.Tests`, which
-imports this code as a submodule and exercises it against a fake organization service that pages
-results at 5000 the way Dataverse does.
+imports it as a submodule and exercises it against a fake organization service that pages
+results at 5000 the way Dataverse does. Nothing currently tests Plugin and Workflow beyond
+compiling them.
 
 ## History
 

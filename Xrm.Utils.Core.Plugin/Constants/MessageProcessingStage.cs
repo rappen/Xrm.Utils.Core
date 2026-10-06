@@ -1,4 +1,4 @@
-﻿namespace Innofactor.Xrm.Utils.Common.Constants
+﻿namespace Xrm.Utils.Core.Common.Constants
 {
     /// <summary>Message processing stages for plugin steps</summary>
     public static class MessageProcessingStage

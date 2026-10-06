@@ -1,12 +1,12 @@
-﻿namespace Innofactor.Xrm.Utils.Workflow
+﻿namespace Xrm.Utils.Core.Workflow
 {
     using System;
     using System.Activities;
     using System.Dynamic;
-    using Innofactor.Xrm.Utils.Common.Interfaces;
-    using Innofactor.Xrm.Utils.Common.Loggers;
-    using Innofactor.Xrm.Utils.Workflow.Extensions;
-    using Innofactor.Xrm.Utils.Workflow.Interfaces;
+    using Xrm.Utils.Core.Common.Interfaces;
+    using Xrm.Utils.Core.Common.Loggers;
+    using Xrm.Utils.Core.Workflow.Extensions;
+    using Xrm.Utils.Core.Workflow.Interfaces;
     using Microsoft.Xrm.Sdk;
     using Microsoft.Xrm.Sdk.Workflow;
 
