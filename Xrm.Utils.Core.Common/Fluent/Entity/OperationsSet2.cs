@@ -85,6 +85,7 @@
             }
             else
             {
+                container.StartSection($"Getting name of primary id attribute on '{logicalName}'");
                 try
                 {
                     var request = new RetrieveEntityRequest()

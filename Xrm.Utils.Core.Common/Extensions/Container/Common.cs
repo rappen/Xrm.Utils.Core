@@ -586,7 +586,7 @@
         {
             container.StartSection($@"{MethodBase.GetCurrentMethod().DeclaringType.Name}\{MethodBase.GetCurrentMethod().Name}");
 
-            container.StartSection($"Reloading {container.Entity(entity).ToString()}.");
+            container.Log($"Reloading {container.Entity(entity).ToString()}.");
 
             foreach (var attr in entity.Attributes.Keys)
             {
