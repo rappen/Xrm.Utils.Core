@@ -1,4 +1,4 @@
-﻿namespace Innofactor.Xrm.Utils.Common.Constants
+﻿namespace Xrm.Utils.Core.Common.Constants
 {
     public static class MessageProcessingMode
     {

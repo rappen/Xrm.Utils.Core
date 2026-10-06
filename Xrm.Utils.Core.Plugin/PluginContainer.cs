@@ -1,11 +1,11 @@
-﻿namespace Innofactor.Xrm.Utils.Common
+﻿namespace Xrm.Utils.Core.Common
 {
     using System;
     using System.Dynamic;
-    using Innofactor.Xrm.Utils.Common.Extensions;
-    using Innofactor.Xrm.Utils.Common.Interfaces;
-    using Innofactor.Xrm.Utils.Common.Loggers;
-    using Innofactor.Xrm.Utils.Common.Misc;
+    using Xrm.Utils.Core.Common.Extensions;
+    using Xrm.Utils.Core.Common.Interfaces;
+    using Xrm.Utils.Core.Common.Loggers;
+    using Xrm.Utils.Core.Common.Misc;
     using Microsoft.Xrm.Sdk;
 
     /// <summary>

@@ -6,7 +6,7 @@
     <SharedGUID>757d7e0d-bcbb-4773-a06c-dd27904b939b</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>Innofactor.Xrm.Utils.Workflow</Import_RootNamespace>
+    <Import_RootNamespace>Xrm.Utils.Core.Workflow</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)ActivityBase.cs" />

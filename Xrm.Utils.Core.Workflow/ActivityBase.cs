@@ -1,8 +1,8 @@
-﻿namespace Innofactor.Xrm.Utils.Workflow
+﻿namespace Xrm.Utils.Core.Workflow
 {
     using System;
     using System.Activities;
-    using Innofactor.Xrm.Utils.Common.Extensions;
+    using Xrm.Utils.Core.Common.Extensions;
 
     public abstract class ActivityBase : CodeActivity
     {

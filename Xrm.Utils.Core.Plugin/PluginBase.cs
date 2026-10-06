@@ -1,8 +1,8 @@
-﻿namespace Innofactor.Xrm.Utils.Common
+﻿namespace Xrm.Utils.Core.Common
 {
     using System;
-    using Innofactor.Xrm.Utils.Common.Extensions;
-    using Innofactor.Xrm.Utils.Common.Interfaces;
+    using Xrm.Utils.Core.Common.Extensions;
+    using Xrm.Utils.Core.Common.Interfaces;
     using Microsoft.Xrm.Sdk;
 
     /// <summary>
