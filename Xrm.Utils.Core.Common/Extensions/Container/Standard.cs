@@ -132,8 +132,18 @@
         /// <param name="container"></param>
         /// <param name="query"></param>
         /// <returns></returns>
+        /// <remarks>
+        /// A single RetrieveMultiple returns at most one page of 5000 records, so this follows the
+        /// paging cookie until the last page. The query's PageInfo is overwritten. A query with
+        /// TopCount is sent as it is, since TopCount cannot be combined with paging.
+        /// </remarks>
         public static EntityCollection RetrieveAll(this IExecutionContainer container, QueryExpression query)
         {
+            if (query.TopCount.HasValue)
+            {
+                return container.RetrieveMultiple(query);
+            }
+
             query.PageInfo = new PagingInfo
             {
                 Count = 5000,
@@ -142,16 +152,11 @@
                 PagingCookie = null
             };
 
-            var results = new EntityCollection();
+            var results = new EntityCollection { EntityName = query.EntityName };
 
             while (true)
             {
-                var request = GetRequest(query);
-
-                var response = container.Service.Execute(request);
-
-                var batch = ((RetrieveMultipleResponse)((OrganizationResponseCollection)response.Results["Responses"])[0])
-                    .EntityCollection;
+                var batch = container.RetrieveMultiple(query);
 
                 results.AddRange(batch);
 
@@ -219,22 +224,5 @@
         }
 
         #endregion Public Methods
-
-        #region Private Methods
-
-        private static ExecuteTransactionRequest GetRequest(QueryExpression query)
-        {
-            var request = new ExecuteTransactionRequest()
-            {
-                ReturnResponses = true,
-                Requests = new OrganizationRequestCollection()
-            };
-
-            request.Requests.Add(new RetrieveMultipleRequest { Query = query });
-
-            return request;
-        }
-
-        #endregion Private Methods
     }
 }
