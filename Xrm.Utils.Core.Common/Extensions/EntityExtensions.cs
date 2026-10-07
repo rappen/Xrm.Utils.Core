@@ -312,14 +312,14 @@
                     case "Integer":
                         if (!string.IsNullOrWhiteSpace(value))
                         {
-                            entity.SetAttribute(attribute, int.Parse(value));
+                            entity.SetAttribute(attribute, ValueText.ParseInt(value));
                         }
                         break;
 
                     case "Int64":
                         if (!string.IsNullOrWhiteSpace(value))
                         {
-                            entity.SetAttribute(attribute, long.Parse(value));
+                            entity.SetAttribute(attribute, ValueText.ParseLong(value));
                         }
                         break;
 
@@ -369,7 +369,9 @@
                     case "DateTime":
                         if (!string.IsNullOrWhiteSpace(value))
                         {
-                            entity.SetAttribute(attribute, DateTime.Parse(value, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal));
+                            // AdjustToUniversal: the same moment, returned as UTC rather than as the
+                            // local time of whatever machine runs the import.
+                            entity.SetAttribute(attribute, DateTime.Parse(value, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal));
                         }
                         break;
 
@@ -392,14 +394,21 @@
                     case "Decimal":
                         if (!string.IsNullOrWhiteSpace(value))
                         {
-                            entity.SetAttribute(attribute, decimal.Parse(value));
+                            entity.SetAttribute(attribute, ValueText.ParseDecimal(value));
+                        }
+                        break;
+
+                    case "Double":
+                        if (!string.IsNullOrWhiteSpace(value))
+                        {
+                            entity.SetAttribute(attribute, ValueText.ParseDouble(value));
                         }
                         break;
 
                     case "Money":
                         if (!string.IsNullOrWhiteSpace(value))
                         {
-                            entity.SetAttribute(attribute, new Money(decimal.Parse(value)));
+                            entity.SetAttribute(attribute, new Money(ValueText.ParseDecimal(value)));
                         }
                         break;
 

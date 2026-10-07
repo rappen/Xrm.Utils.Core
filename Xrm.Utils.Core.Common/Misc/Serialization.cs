@@ -373,7 +373,7 @@
                     var value = "<null>";
                     if (entity.Contains(attribute) && entity[attribute] != null)
                     {
-                        value = container.AttributeAsBaseType(entity, attribute, "", false).ToString();
+                        value = ValueText.Format(container.AttributeAsBaseType(entity, attribute, "", false));
                         if (entity[attribute] is EntityReference)
                         {
                             value = entity.GetAttribute<EntityReference>(attribute, null).LogicalName + ":" + value;
@@ -484,7 +484,7 @@
             }
             if (basetypevalue != null)
             {
-                var nodeText = basetypevalue is DateTime ? ((DateTime)basetypevalue).ToString("O") : basetypevalue.ToString();
+                var nodeText = ValueText.Format(basetypevalue);
                 var xValue = result.CreateTextNode(nodeText);
                 xAttribute.AppendChild(xValue);
             }
@@ -546,7 +546,7 @@
             }
             if (basetypevalue != null)
             {
-                var xValue = result.CreateTextNode(basetypevalue.ToString());
+                var xValue = result.CreateTextNode(ValueText.Format(basetypevalue));
                 xAttribute.AppendChild(xValue);
             }
             xEntity.AppendChild(xAttribute);
