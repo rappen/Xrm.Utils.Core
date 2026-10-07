@@ -155,7 +155,8 @@ reader/writer.
   `count` is kept as the page size.
 - **Values in data files do not depend on the machine's culture.** `ValueText` writes numbers in
   the invariant culture (`1234.5`) and dates as round-trip `O` (`2026-10-05T12:30:00.0000000Z`),
-  and `SetAttribute` reads them back the same way, with dates returned as UTC. A number written
+  and `SetAttribute` reads numbers back the same way. Dates are read as they always were: a value
+  without a time zone is taken as UTC and passed on in the machine's local time. A number written
   the old way, in a comma-decimal culture, is still read on a machine with that culture, and is
   rejected with a clear error - never misread as a larger number - anywhere else. `Double`
   columns are supported alongside `Decimal` and `Money`.

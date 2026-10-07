@@ -369,9 +369,7 @@
                     case "DateTime":
                         if (!string.IsNullOrWhiteSpace(value))
                         {
-                            // AdjustToUniversal: the same moment, returned as UTC rather than as the
-                            // local time of whatever machine runs the import.
-                            entity.SetAttribute(attribute, DateTime.Parse(value, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal | DateTimeStyles.AdjustToUniversal));
+                            entity.SetAttribute(attribute, DateTime.Parse(value, CultureInfo.InvariantCulture, DateTimeStyles.AssumeUniversal));
                         }
                         break;
 
