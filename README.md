@@ -142,15 +142,24 @@ opens a log section on every call, which floods a log when it runs per record.
 ### Utilities (`Misc`, `CsvHelper`)
 
 `Query` (adding conditions and links to a `QueryExpression`), `FetchXML` (building FetchXml
-documents), `Serialization` and `XML`, `EntityComparer` and `SortAttribute` (sorting records by
+documents), `ValueText` (culture-independent value text), `Serialization` and `XML`, `EntityComparer` and `SortAttribute` (sorting records by
 attributes), `PPH` (populating placeholders from a record), `Constants`, and a small CSV
 reader/writer.
 
 ## Things worth knowing
 
 - **`RetrieveMultiple` returns one page; `RetrieveAll` returns everything.** Dataverse caps a
-  page at 5000 records. `RetrieveAll` follows the paging cookie until the last page; a query with
-  `TopCount` is sent as it is, since the two cannot be combined.
+  page at 5000 records. `RetrieveAll` follows the paging cookie until the last page, for a
+  `QueryExpression` and for a `FetchExpression` alike. A query with `TopCount`, or FetchXML with
+  `top` or `aggregate`, is sent as it is, since those cannot be combined with paging; a FetchXML
+  `count` is kept as the page size.
+- **Values in data files do not depend on the machine's culture.** `ValueText` writes numbers in
+  the invariant culture (`1234.5`) and dates as round-trip `O` (`2026-10-05T12:30:00.0000000Z`),
+  and `SetAttribute` reads numbers back the same way. Dates are read as they always were: a value
+  without a time zone is taken as UTC and passed on in the machine's local time. A number written
+  the old way, in a comma-decimal culture, is still read on a machine with that culture, and is
+  rejected with a clear error - never misread as a larger number - anywhere else. `Double`
+  columns are supported alongside `Decimal` and `Money`.
 - **Keep log sections balanced.** Every `StartSection` needs exactly one `EndSection`, or the
   rest of the log is nested wrong and timings are attributed to the wrong section. Where an
   exception can pass through and the caller carries on, end the section in a `finally`:

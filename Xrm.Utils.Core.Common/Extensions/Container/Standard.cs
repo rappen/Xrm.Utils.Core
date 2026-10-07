@@ -2,7 +2,9 @@
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Reflection;
+    using System.Xml;
     using Xrm.Utils.Core.Common.Interfaces;
     using Microsoft.Xrm.Sdk;
     using Microsoft.Xrm.Sdk.Messages;
@@ -169,6 +171,53 @@
                 query.PageInfo.PagingCookie = batch.PagingCookie;
             }
 
+            return results;
+        }
+
+        /// <summary>
+        /// Retrieve All records using FetchXML
+        /// </summary>
+        /// <param name="container"></param>
+        /// <param name="fetch"></param>
+        /// <returns></returns>
+        /// <remarks>
+        /// Follows the paging cookie like the QueryExpression overload, by setting the page,
+        /// count and paging-cookie attributes on the fetch element. A query with top or
+        /// aggregate is sent as it is, since neither can be combined with paging; a count
+        /// already on the query is kept as the page size.
+        /// </remarks>
+        public static EntityCollection RetrieveAll(this IExecutionContainer container, FetchExpression fetch)
+        {
+            var xml = new XmlDocument();
+            xml.LoadXml(fetch.Query);
+            var xFetch = xml.DocumentElement;
+            if (xFetch.HasAttribute("top") ||
+                string.Equals(xFetch.GetAttribute("aggregate"), "true", StringComparison.OrdinalIgnoreCase))
+            {
+                return container.RetrieveMultiple(fetch);
+            }
+            if (!xFetch.HasAttribute("count"))
+            {
+                xFetch.SetAttribute("count", "5000");
+            }
+            xFetch.RemoveAttribute("paging-cookie");
+
+            var results = new EntityCollection();
+            for (var page = 1; ; page++)
+            {
+                xFetch.SetAttribute("page", page.ToString(CultureInfo.InvariantCulture));
+                var batch = container.RetrieveMultiple(new FetchExpression(xml.OuterXml));
+                results.EntityName = batch.EntityName;
+                results.AddRange(batch);
+                if (!batch.MoreRecords)
+                {
+                    break;
+                }
+                if (!string.IsNullOrEmpty(batch.PagingCookie))
+                {
+                    xFetch.SetAttribute("paging-cookie", batch.PagingCookie);
+                }
+            }
             return results;
         }
 

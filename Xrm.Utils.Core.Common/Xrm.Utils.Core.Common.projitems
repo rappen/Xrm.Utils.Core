@@ -46,6 +46,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)Misc\Serialization.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Misc\SortAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Misc\Utils.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Misc\ValueText.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Misc\XML.cs" />
   </ItemGroup>
   <ItemGroup>
